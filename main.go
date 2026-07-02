@@ -38,12 +38,14 @@ func main() {
 	}
 
 	srv := &server{client: client, bucket: bucket}
+	m := newMetrics()
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
-	http.HandleFunc("/objects", srv.list)
-	http.HandleFunc("/objects/", srv.object)
+	http.HandleFunc("/metrics", m.handler)
+	http.HandleFunc("/objects", m.instrument("list", srv.list))
+	http.HandleFunc("/objects/", m.instrument("object", srv.object))
 
 	addr := ":" + envOr("PORT", "8080")
 	log.Printf("listening on %s (bucket=%s, endpoint=%s)", addr, bucket, endpoint)
