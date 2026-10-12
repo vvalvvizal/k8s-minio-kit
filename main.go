@@ -40,6 +40,7 @@ func main() {
 	srv := &server{client: client, bucket: bucket}
 	m := newMetrics()
 
+	http.HandleFunc("/", srv.index)
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

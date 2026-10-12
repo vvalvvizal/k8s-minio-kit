@@ -41,7 +41,8 @@ spec:
     spec:
       containers:
         - name: minio
-          image: minio/minio:latest
+          image: openvidu/minio:RELEASE.2026-09-22T19-25-18Z-r0
+          imagePullPolicy: IfNotPresent
           args: ["server", "/data", "--console-address", ":9001"]
           env:
             - name: MINIO_ROOT_USER
